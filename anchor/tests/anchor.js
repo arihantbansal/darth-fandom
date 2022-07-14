@@ -1,13 +1,23 @@
 const anchor = require("@project-serum/anchor");
 
-describe("anchor", () => {
-  // Configure the client to use the local cluster.
-  anchor.setProvider(anchor.AnchorProvider.env());
+const main = async () => {
+	console.log("🚀 Starting test...");
 
-  it("Is initialized!", async () => {
-    // Add your test here.
-    const program = anchor.workspace.Anchor;
-    const tx = await program.methods.initialize().rpc();
-    console.log("Your transaction signature", tx);
-  });
-});
+	anchor.setProvider(anchor.AnchorProvider.env());
+	const program = anchor.workspace.Fandom;
+	const tx = await program.rpc.startStuffOf();
+
+	console.log("📝 Your transaction signature", tx);
+};
+
+const runMain = async () => {
+	try {
+		await main();
+		process.exit(0);
+	} catch (error) {
+		console.error(error);
+		process.exit(1);
+	}
+};
+
+runMain();

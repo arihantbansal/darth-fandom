@@ -3,13 +3,12 @@ use anchor_lang::prelude::*;
 declare_id!("Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS");
 
 #[program]
-pub mod anchor {
+pub mod fandom {
     use super::*;
-
-    pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
+    pub fn start_stuff_off(ctx: Context<StartStuffOff>) -> Result<()> {
         Ok(())
     }
 }
 
 #[derive(Accounts)]
-pub struct Initialize {}
+pub struct StartStuffOff {}

@@ -1,5 +1,3 @@
-# Darth Fandom Portal
+### Darth Fandom Portal Frontend
 
-Welcome to the dark side. We have cookies 🌑
-
-Made with ☕ on Solana
+Built with React.js, & @solana/web3.js
