@@ -1,7 +1,7 @@
 [features]
 seeds = false
 [programs.localnet]
-anchor = "Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS"
+fandom = "Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS"
 
 [registry]
 url = "https://anchor.projectserum.com"
@@ -11,7 +11,7 @@ cluster = "localnet"
 wallet = "/root/.config/solana/id.json"
 
 [scripts]
-test = "node tests/anchor.js"
+test = "node tests/fandom.js"
 
 [test]
-startup_wait = 10000
+startup_wait = 100000
