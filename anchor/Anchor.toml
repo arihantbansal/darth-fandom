@@ -1,13 +1,13 @@
 [features]
 seeds = false
-[programs.localnet]
-fandom = "Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS"
+[programs.devnet]
+fandom = "Eh1KdjkWnXLuuNR6ec3aj1W1TWPiJAUVv5hY8KAUPMYs"
 
 [registry]
 url = "https://anchor.projectserum.com"
 
 [provider]
-cluster = "localnet"
+cluster = "devnet"
 wallet = "/root/.config/solana/id.json"
 
 [scripts]
