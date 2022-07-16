@@ -190,7 +190,9 @@ const App = () => {
 					{postsList.map((item, index) => (
 						<div className="post-item" key={index}>
 							<img src={item.imgLink} alt={`img #${index}`} />
-							<h3 className="post-desc">{item.caption.toString()}</h3>
+							<h3 className="post-desc">
+								{item.caption.toString()} {"  "} {item.votes.toString()}
+							</h3>
 							<p className="post-desc">
 								Posted by:{" "}
 								<a
