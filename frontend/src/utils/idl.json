@@ -3,7 +3,7 @@
 	"name": "fandom",
 	"instructions": [
 		{
-			"name": "startStuffOff",
+			"name": "initialize",
 			"accounts": [
 				{
 					"name": "baseAccount",
@@ -24,7 +24,7 @@
 			"args": []
 		},
 		{
-			"name": "addGif",
+			"name": "addPost",
 			"accounts": [
 				{
 					"name": "baseAccount",
@@ -39,7 +39,27 @@
 			],
 			"args": [
 				{
-					"name": "gifLink",
+					"name": "imgLink",
+					"type": "string"
+				},
+				{
+					"name": "caption",
+					"type": "string"
+				}
+			]
+		},
+		{
+			"name": "updatePost",
+			"accounts": [
+				{
+					"name": "baseAccount",
+					"isMut": true,
+					"isSigner": false
+				}
+			],
+			"args": [
+				{
+					"name": "stringId",
 					"type": "string"
 				}
 			]
@@ -52,14 +72,14 @@
 				"kind": "struct",
 				"fields": [
 					{
-						"name": "totalGifs",
+						"name": "totalPosts",
 						"type": "u64"
 					},
 					{
-						"name": "gifList",
+						"name": "postsList",
 						"type": {
 							"vec": {
-								"defined": "ItemStruct"
+								"defined": "PostStruct"
 							}
 						}
 					}
@@ -69,13 +89,21 @@
 	],
 	"types": [
 		{
-			"name": "ItemStruct",
+			"name": "PostStruct",
 			"type": {
 				"kind": "struct",
 				"fields": [
 					{
-						"name": "gifLink",
+						"name": "imgLink",
 						"type": "string"
+					},
+					{
+						"name": "caption",
+						"type": "string"
+					},
+					{
+						"name": "votes",
+						"type": "u16"
 					},
 					{
 						"name": "userAddress",
@@ -85,7 +113,11 @@
 			}
 		}
 	],
-	"metadata": {
-		"address": "Eh1KdjkWnXLuuNR6ec3aj1W1TWPiJAUVv5hY8KAUPMYs"
-	}
+	"errors": [
+		{
+			"code": 6000,
+			"name": "IDError",
+			"msg": "Invalid Post ID"
+		}
+	]
 }

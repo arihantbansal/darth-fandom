@@ -168,6 +168,15 @@ const App = () => {
 					{gifList.map((item, index) => (
 						<div className="gif-item" key={index}>
 							<img src={item.gifLink} alt={`gif #${index}`} />
+							<p className="gif-desc">
+								Posted by:{" "}
+								<a
+									href={`https://solscan.io/account/${item.userAddress.toString()}?cluster=devnet`}
+									target="_blank"
+									rel="noreferrer">
+									{item.userAddress.toString().substring(0, 6) + "..."}
+								</a>
+							</p>
 						</div>
 					))}
 				</div>

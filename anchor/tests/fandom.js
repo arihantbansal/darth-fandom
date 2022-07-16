@@ -9,7 +9,7 @@ const main = async () => {
 
 	const program = anchor.workspace.Fandom;
 	const baseAccount = anchor.web3.Keypair.generate();
-	let tx = await program.rpc.startStuffOff({
+	let tx = await program.rpc.initialize({
 		accounts: {
 			baseAccount: baseAccount.publicKey,
 			user: provider.wallet.publicKey,
@@ -20,10 +20,11 @@ const main = async () => {
 	console.log("📝 Your transaction signature", tx);
 
 	let account = await program.account.baseAccount.fetch(baseAccount.publicKey);
-	console.log("👀 GIF Count", account.totalGifs.toString());
+	console.log("👀 Post Count", account.totalPosts.toString());
 
-	await program.rpc.addGif(
+	await program.rpc.addPost(
 		"https://media.giphy.com/media/4SBtIAp4sEDxC/giphy.gif",
+		"Power of the Dark Side!",
 		{
 			accounts: {
 				baseAccount: baseAccount.publicKey,
@@ -33,9 +34,9 @@ const main = async () => {
 	);
 
 	account = await program.account.baseAccount.fetch(baseAccount.publicKey);
-	console.log("👀 GIF Count", account.totalGifs.toString());
+	console.log("👀 Post Count", account.totalPosts.toString());
 
-	console.log("👀 GIF List", account.gifList);
+	console.log("👀 Post List", account.postsList);
 };
 
 const runMain = async () => {
