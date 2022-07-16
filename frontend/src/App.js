@@ -6,7 +6,7 @@ import "./App.css";
 import idl from "./utils/idl.json";
 import kp from "./utils/keypair.json";
 
-const { SystemProgram, Keypair } = web3;
+const { SystemProgram } = web3;
 const arr = Object.values(kp._keypair.secretKey);
 const secret = new Uint8Array(arr);
 const baseAccount = web3.Keypair.fromSecretKey(secret);
@@ -20,12 +20,10 @@ const opts = {
 const TWITTER_HANDLE = "_arihantbansal";
 const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
 
-const TEST_GIFS = [
-	"https://media.giphy.com/media/h9jlaGjlwCpJYKwjtV/giphy.gif",
-	"https://media.giphy.com/media/aUWVAN2m2ICAgzOVDn/giphy.gif",
-	"https://media.giphy.com/media/4YQQuTvNiLJSPP3gdS/giphy.gif",
-	"https://media.giphy.com/media/xT9DPpf0zTqRASyzTi/giphy.gif",
-];
+// "https://media.giphy.com/media/h9jlaGjlwCpJYKwjtV/giphy.gif",
+// "https://media.giphy.com/media/aUWVAN2m2ICAgzOVDn/giphy.gif",
+// "https://media.giphy.com/media/4YQQuTvNiLJSPP3gdS/giphy.gif",
+// "https://media.giphy.com/media/xT9DPpf0zTqRASyzTi/giphy.gif",
 
 const App = () => {
 	const [walletAddress, setWalletAddress] = useState(null);
@@ -61,16 +59,6 @@ const App = () => {
 			const response = await solana.connect();
 			console.log("Connected with Public Key:", response.publicKey.toString());
 			setWalletAddress(response.publicKey.toString());
-		}
-	};
-
-	const sendGif = async () => {
-		if (inputValue.length > 0) {
-			console.log("Gif link:", inputValue);
-			setGifList([...gifList, inputValue]);
-			setInputValue("");
-		} else {
-			console.log("Empty input. Try again.");
 		}
 	};
 
