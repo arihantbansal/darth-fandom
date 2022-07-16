@@ -27,8 +27,9 @@ const TWITTER_LINK = `https://twitter.com/${TWITTER_HANDLE}`;
 
 const App = () => {
 	const [walletAddress, setWalletAddress] = useState(null);
-	const [inputValue, setInputValue] = useState("");
-	const [gifList, setGifList] = useState([]);
+	const [inputLink, setInputLink] = useState("");
+	const [inputCaption, setInputCaption] = useState("");
+	const [postsList, setPostsList] = useState([]);
 
 	const checkIfWalletIsConnected = async () => {
 		try {
@@ -70,9 +71,13 @@ const App = () => {
 		</button>
 	);
 
-	const onInputChange = (event) => {
+	const onLinkChange = (event) => {
 		const { value } = event.target;
-		setInputValue(value);
+		setInputLink(value);
+	};
+	const onCaptionChange = (event) => {
+		const { value } = event.target;
+		setInputCaption(value);
 	};
 
 	const getProvider = () => {
@@ -85,13 +90,13 @@ const App = () => {
 		return provider;
 	};
 
-	const createGifAccount = async () => {
+	const createAccount = async () => {
 		try {
 			const provider = getProvider();
 			const program = new Program(idl, programID, provider);
 			console.log("ping");
 
-			await program.rpc.startStuffOff({
+			await program.rpc.initialize({
 				accounts: {
 					baseAccount: baseAccount.publicKey,
 					user: provider.wallet.publicKey,
@@ -104,45 +109,53 @@ const App = () => {
 				"Created a new BaseAccount w/ address:",
 				baseAccount.publicKey.toString()
 			);
-			await getGifList();
+			await getPostsList();
 		} catch (error) {
 			console.log("Error creating BaseAccount account:", error);
 		}
 	};
 
-	const sendGif = async () => {
-		if (inputValue.length === 0) {
-			console.log("No gif link given!");
+	const sendPost = async () => {
+		if (inputLink.length === 0) {
+			console.log("No post link given!");
 			return;
 		}
-		setInputValue("");
-		console.log("Gif link:", inputValue);
+		if (inputCaption.length === 0) {
+			console.log("No post caption given!");
+			return;
+		}
+
+		setInputLink("");
+		setInputCaption("");
+		console.log("Post link:", inputLink);
+		console.log("Post Caption:", inputCaption);
+
 		try {
 			const provider = getProvider();
 			const program = new Program(idl, programID, provider);
 
-			await program.rpc.addGif(inputValue, {
+			await program.rpc.addPost(inputLink, inputCaption, {
 				accounts: {
 					baseAccount: baseAccount.publicKey,
 					user: provider.wallet.publicKey,
 				},
 			});
-			console.log("GIF successfully sent to program", inputValue);
+			console.log("Post successfully sent to program", inputLink, inputCaption);
 
-			await getGifList();
+			await getPostsList();
 		} catch (error) {
-			console.log("Error sending GIF:", error);
+			console.log("Error sending Post:", error);
 		}
 	};
 
 	const renderConnectedContainer = () => {
-		if (gifList === null) {
+		if (postsList === null) {
 			return (
 				<div className="connected-container">
 					<button
-						className="cta-button submit-gif-button"
-						onClick={createGifAccount}>
-						Do One-Time Initialization For GIF Program Account
+						className="cta-button submit-post-button"
+						onClick={createAccount}>
+						Do One-Time Initialization For Program Account
 					</button>
 				</div>
 			);
@@ -150,25 +163,35 @@ const App = () => {
 		return (
 			<div className="connected-container">
 				<form
+					className="post-form"
 					onSubmit={(event) => {
 						event.preventDefault();
-						sendGif();
+						sendPost();
 					}}>
 					<input
 						type="text"
-						placeholder="Enter gif link!"
-						value={inputValue}
-						onChange={onInputChange}
+						name="image"
+						placeholder="Enter image link!"
+						value={inputLink}
+						onChange={onLinkChange}
 					/>
-					<button type="submit" className="cta-button submit-gif-button">
+					<input
+						type="text"
+						name="caption"
+						placeholder="Enter caption!"
+						value={inputCaption}
+						onChange={onCaptionChange}
+					/>
+					<button type="submit" className="cta-button submit-post-button">
 						Submit
 					</button>
 				</form>
-				<div className="gif-grid">
-					{gifList.map((item, index) => (
-						<div className="gif-item" key={index}>
-							<img src={item.gifLink} alt={`gif #${index}`} />
-							<p className="gif-desc">
+				<div className="post-grid">
+					{postsList.map((item, index) => (
+						<div className="post-item" key={index}>
+							<img src={item.imgLink} alt={`img #${index}`} />
+							<h3 className="post-desc">{item.caption.toString()}</h3>
+							<p className="post-desc">
 								Posted by:{" "}
 								<a
 									href={`https://solscan.io/account/${item.userAddress.toString()}?cluster=devnet`}
@@ -192,7 +215,7 @@ const App = () => {
 		return () => window.removeEventListener("load", onLoad);
 	}, []);
 
-	const getGifList = async () => {
+	const getPostsList = async () => {
 		try {
 			const provider = getProvider();
 			const program = new Program(idl, programID, provider);
@@ -201,18 +224,18 @@ const App = () => {
 			);
 
 			console.log("Got the account:", account);
-			setGifList(account.gifList);
+			setPostsList(account.postsList);
 		} catch (error) {
-			console.log("Error in getGifList:", error);
-			setGifList(null);
+			console.log("Error in getPostsList:", error);
+			setPostsList(null);
 		}
 	};
 
 	useEffect(() => {
 		if (walletAddress) {
-			console.log("Fetching GIF list...");
+			console.log("Fetching Posts...");
 
-			getGifList();
+			getPostsList();
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [walletAddress]);
@@ -232,7 +255,7 @@ const App = () => {
 						className="footer-text"
 						href={TWITTER_LINK}
 						target="_blank"
-						rel="noreferrer">{`built on @${TWITTER_HANDLE}`}</a>
+						rel="noreferrer">{`built by @${TWITTER_HANDLE}`}</a>
 				</div>
 			</div>
 		</div>
